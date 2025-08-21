@@ -1,0 +1,204 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "username": "john_doe",
+      "email": "john@example.com",
+      "hashedPassword": "$2b$10$hashedpassword",
+      "balance": 50000.00,
+      "role": "user",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "2",
+      "username": "jane_smith",
+      "email": "jane@example.com",
+      "hashedPassword": "$2b$10$hashedpassword",
+      "balance": 75000.00,
+      "role": "trader",
+      "createdAt": "2024-01-02T00:00:00Z",
+      "updatedAt": "2024-01-02T00:00:00Z"
+    }
+  ],
+  "portfolio": [
+    {
+      "id": "1",
+      "userId": "1",
+      "symbol": "AAPL",
+      "quantity": 100,
+      "avgBuyPrice": 150.00,
+      "currentPrice": 175.50,
+      "currentValue": 17550.00,
+      "unrealizedPnl": 2550.00
+    },
+    {
+      "id": "2",
+      "userId": "1",
+      "symbol": "GOOGL",
+      "quantity": 50,
+      "avgBuyPrice": 2800.00,
+      "currentPrice": 2950.00,
+      "currentValue": 147500.00,
+      "unrealizedPnl": 7500.00
+    },
+    {
+      "id": "3",
+      "userId": "2",
+      "symbol": "MSFT",
+      "quantity": 75,
+      "avgBuyPrice": 300.00,
+      "currentPrice": 320.00,
+      "currentValue": 24000.00,
+      "unrealizedPnl": 1500.00
+    },
+    {
+      "id": "4",
+      "userId": "2",
+      "symbol": "TSLA",
+      "quantity": 25,
+      "avgBuyPrice": 800.00,
+      "currentPrice": 750.00,
+      "currentValue": 18750.00,
+      "unrealizedPnl": -1250.00
+    }
+  ],
+  "orders": [
+    {
+      "id": "1",
+      "userId": "1",
+      "symbol": "AAPL",
+      "type": "buy",
+      "quantity": 50,
+      "price": 170.00,
+      "status": "executed",
+      "placedAt": "2024-01-15T10:30:00Z",
+      "filledAt": "2024-01-15T10:32:00Z"
+    },
+    {
+      "id": "2",
+      "userId": "1",
+      "symbol": "GOOGL",
+      "type": "sell",
+      "quantity": 25,
+      "price": 2900.00,
+      "status": "pending",
+      "placedAt": "2024-01-16T14:20:00Z",
+      "filledAt": null
+    },
+    {
+      "id": "3",
+      "userId": "2",
+      "symbol": "MSFT",
+      "type": "buy",
+      "quantity": 100,
+      "price": 310.00,
+      "status": "cancelled",
+      "placedAt": "2024-01-17T09:15:00Z",
+      "filledAt": null
+    }
+  ],
+  "executions": [
+    {
+      "id": "1",
+      "orderId": "1",
+      "symbol": "AAPL",
+      "executedPrice": 170.00,
+      "executedQuantity": 50,
+      "executedAt": "2024-01-15T10:32:00Z"
+    }
+  ],
+  "marketdata": [
+    {
+      "symbol": "AAPL",
+      "name": "Apple Inc.",
+      "price": 175.50,
+      "change": 2.50,
+      "changePercent": 1.44,
+      "volume": 45000000,
+      "timestamp": "2024-01-18T16:00:00Z"
+    },
+    {
+      "symbol": "GOOGL",
+      "name": "Alphabet Inc.",
+      "price": 2950.00,
+      "change": 25.00,
+      "changePercent": 0.85,
+      "volume": 1500000,
+      "timestamp": "2024-01-18T16:00:00Z"
+    },
+    {
+      "symbol": "MSFT",
+      "name": "Microsoft Corporation",
+      "price": 320.00,
+      "change": -5.00,
+      "changePercent": -1.54,
+      "volume": 25000000,
+      "timestamp": "2024-01-18T16:00:00Z"
+    },
+    {
+      "symbol": "TSLA",
+      "name": "Tesla, Inc.",
+      "price": 750.00,
+      "change": -15.00,
+      "changePercent": -1.96,
+      "volume": 35000000,
+      "timestamp": "2024-01-18T16:00:00Z"
+    },
+    {
+      "symbol": "AMZN",
+      "name": "Amazon.com, Inc.",
+      "price": 145.00,
+      "change": 3.50,
+      "changePercent": 2.47,
+      "volume": 40000000,
+      "timestamp": "2024-01-18T16:00:00Z"
+    },
+    {
+      "symbol": "META",
+      "name": "Meta Platforms, Inc.",
+      "price": 380.00,
+      "change": 8.00,
+      "changePercent": 2.15,
+      "volume": 20000000,
+      "timestamp": "2024-01-18T16:00:00Z"
+    }
+  ],
+  "notifications": [
+    {
+      "id": "1",
+      "userId": "1",
+      "type": "order_filled",
+      "message": "Your AAPL buy order has been filled at $170.00",
+      "meta": {
+        "orderId": "1",
+        "symbol": "AAPL",
+        "price": 170.00
+      },
+      "sentAt": "2024-01-15T10:32:00Z",
+      "isRead": false
+    },
+    {
+      "id": "2",
+      "userId": "1",
+      "type": "price_threshold",
+      "message": "AAPL has reached your target price of $175.00",
+      "meta": {
+        "symbol": "AAPL",
+        "targetPrice": 175.00,
+        "currentPrice": 175.50
+      },
+      "sentAt": "2024-01-18T15:30:00Z",
+      "isRead": true
+    },
+    {
+      "id": "3",
+      "userId": "2",
+      "type": "system",
+      "message": "Welcome to Nexus Trading Platform!",
+      "meta": {},
+      "sentAt": "2024-01-02T00:00:00Z",
+      "isRead": true
+    }
+  ]
+}
