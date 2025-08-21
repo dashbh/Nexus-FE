@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "dev:mock": "concurrently \"npm run dev\" \"json-server --watch mock-data.json --port 3001 --delay 1000\"",
+    "dev:mock": "concurrently \"npm run dev\" \"json-server --watch mock-data.json --port 3001\"",
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint"

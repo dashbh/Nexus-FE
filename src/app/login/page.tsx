@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Skeleton } from '@/components/ui/skeleton';
+import { Spinner } from '@/components/ui/spinner';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -61,7 +61,7 @@ export default function LoginPage() {
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? (
                 <div className="flex items-center gap-2">
-                  <Skeleton className="h-4 w-4 rounded-full animate-spin" />
+                  <Spinner size="sm" />
                   Signing In...
                 </div>
               ) : (

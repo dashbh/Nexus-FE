@@ -5,8 +5,7 @@ import { Navbar } from '@/components/Navbar';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { formatCurrency, formatNumber } from '@/lib/utils';
-import { TableSkeleton } from '@/components/skeletons/TableSkeleton';
-import { SummaryCardSkeleton } from '@/components/skeletons/CardSkeleton';
+import { TableSkeleton, SummaryCardSkeleton } from '@/components/skeletons';
 
 export default function PortfolioPage() {
   const { data: portfolio, isLoading, error } = useGetPortfolioQuery();

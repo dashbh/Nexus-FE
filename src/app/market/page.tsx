@@ -5,7 +5,7 @@ import { Navbar } from '@/components/Navbar';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { formatCurrency, formatNumber, formatPercent } from '@/lib/utils';
-import { TableSkeleton } from '@/components/skeletons/TableSkeleton';
+import { TableSkeleton } from '@/components/skeletons';
 
 export default function MarketPage() {
   const { data: marketData, isLoading, error } = useGetMarketDataQuery();
