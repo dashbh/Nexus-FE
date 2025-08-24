@@ -1,7 +1,7 @@
 'use client';
 
 import { useGetOrdersQuery } from '@/lib/api';
-import { Navbar } from '@/components/Navbar';
+import { AppShell } from '@/components/layout/AppShell';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
@@ -40,9 +40,51 @@ export default function OrdersPage() {
 
   if (isLoading) {
     return (
-      <div className="container mx-auto p-4">
-        <Navbar />
-        
+      <AppShell>
+        <div className="space-y-6">
+          {/* Header */}
+          <div>
+            <h1 className="text-3xl font-bold">Orders</h1>
+            <p className="text-muted-foreground">Your trading orders and their current status</p>
+          </div>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Order History</CardTitle>
+              <CardDescription>Your trading orders and their current status</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="overflow-x-auto">
+                <TableSkeleton rows={3} columns={8} />
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </AppShell>
+    );
+  }
+
+  if (error) {
+    return (
+      <AppShell>
+        <Card>
+          <CardContent className="p-6">
+            <div className="text-center text-red-600">Error loading orders</div>
+          </CardContent>
+        </Card>
+      </AppShell>
+    );
+  }
+
+  return (
+    <AppShell>
+      <div className="space-y-6">
+        {/* Header */}
+        <div>
+          <h1 className="text-3xl font-bold">Orders</h1>
+          <p className="text-muted-foreground">Your trading orders and their current status</p>
+        </div>
+
         <Card>
           <CardHeader>
             <CardTitle>Order History</CardTitle>
@@ -50,71 +92,40 @@ export default function OrdersPage() {
           </CardHeader>
           <CardContent>
             <div className="overflow-x-auto">
-              <TableSkeleton rows={3} columns={8} />
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Order ID</TableHead>
+                    <TableHead>Symbol</TableHead>
+                    <TableHead>Type</TableHead>
+                    <TableHead>Quantity</TableHead>
+                    <TableHead>Price</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Placed At</TableHead>
+                    <TableHead>Filled At</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {orders?.map((order) => (
+                    <TableRow key={order.id} className="hover:bg-gray-50">
+                      <TableCell className="font-mono text-sm">{order.id}</TableCell>
+                      <TableCell className="font-medium">{order.symbol}</TableCell>
+                      <TableCell>{getTypeBadge(order.type)}</TableCell>
+                      <TableCell>{formatNumber(order.quantity)}</TableCell>
+                      <TableCell className="font-mono">{formatCurrency(order.price)}</TableCell>
+                      <TableCell>{getStatusBadge(order.status)}</TableCell>
+                      <TableCell className="text-sm">{formatDate(order.placedAt)}</TableCell>
+                      <TableCell className="text-sm">
+                        {order.filledAt ? formatDate(order.filledAt) : '-'}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
             </div>
           </CardContent>
         </Card>
       </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="container mx-auto p-4">
-        <Navbar />
-        <Card>
-          <CardContent className="p-6">
-            <div className="text-center text-red-600">Error loading orders</div>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="container mx-auto p-4">
-      <Navbar />
-      
-      <Card>
-        <CardHeader>
-          <CardTitle>Order History</CardTitle>
-          <CardDescription>Your trading orders and their current status</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Order ID</TableHead>
-                  <TableHead>Symbol</TableHead>
-                  <TableHead>Type</TableHead>
-                  <TableHead>Quantity</TableHead>
-                  <TableHead>Price</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Placed At</TableHead>
-                  <TableHead>Filled At</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {orders?.map((order) => (
-                  <TableRow key={order.id}>
-                    <TableCell className="font-mono text-sm">{order.id}</TableCell>
-                    <TableCell className="font-medium">{order.symbol}</TableCell>
-                    <TableCell>{getTypeBadge(order.type)}</TableCell>
-                    <TableCell>{formatNumber(order.quantity)}</TableCell>
-                    <TableCell className="font-mono">{formatCurrency(order.price)}</TableCell>
-                    <TableCell>{getStatusBadge(order.status)}</TableCell>
-                    <TableCell className="text-sm">{formatDate(order.placedAt)}</TableCell>
-                    <TableCell className="text-sm">
-                      {order.filledAt ? formatDate(order.filledAt) : '-'}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
+    </AppShell>
   );
 }

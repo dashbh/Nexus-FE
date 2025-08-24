@@ -103,6 +103,20 @@ export const nexusApi = createApi({
     getUsers: builder.query<User[], void>({
       query: () => 'users',
     }),
+
+    // Create order mutation
+    createOrder: builder.mutation<Order, Partial<Order>>({
+      query: (order) => ({
+        url: 'orders',
+        method: 'POST',
+        body: {
+          ...order,
+          id: Date.now().toString(), // Generate a simple ID
+          userId: '1', // Default user ID
+        },
+      }),
+      invalidatesTags: ['Orders'],
+    }),
   }),
 });
 
@@ -113,4 +127,5 @@ export const {
   useGetExecutionsQuery,
   useGetNotificationsQuery,
   useGetUsersQuery,
+  useCreateOrderMutation,
 } = nexusApi;
