@@ -23,7 +23,7 @@ interface AppShellProps {
 
 export function AppShell({ children }: AppShellProps) {
   const pathname = usePathname();
-  const { notifications, toggleRead, markAllRead } = useNotifications();
+  const { notifications, toggleRead, markAllRead, loading } = useNotifications();
 
   const navItems = [
     { href: '/dashboard', label: 'Dashboard', icon: <Home className="h-4 w-4" /> },
@@ -70,6 +70,7 @@ export function AppShell({ children }: AppShellProps) {
                 notifications={notifications}
                 onToggleRead={toggleRead}
                 onMarkAllRead={markAllRead}
+                isLoading={loading}
               />
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>

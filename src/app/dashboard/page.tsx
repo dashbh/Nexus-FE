@@ -5,6 +5,7 @@ import { AppShell } from '@/components/layout/AppShell';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { formatCurrency, formatNumber, formatPercent } from '@/lib/utils';
 import { TrendingUp, TrendingDown, DollarSign, BarChart3, Activity } from 'lucide-react';
+import { NotificationTest } from '@/components/Notifications/NotificationTest';
 
 export default function DashboardPage() {
   const { data: portfolio } = useGetPortfolioQuery();
@@ -189,6 +190,11 @@ export default function DashboardPage() {
             </div>
           </CardContent>
         </Card>
+      </div>
+
+      {/* RTK Query Test Component */}
+      <div className="mt-6">
+        <NotificationTest />
       </div>
     </AppShell>
   );

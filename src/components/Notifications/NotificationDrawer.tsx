@@ -23,6 +23,7 @@ interface NotificationDrawerProps {
   notifications: Notification[];
   onToggleRead: (id: string) => void;
   onMarkAllRead: () => void;
+  isLoading?: boolean;
 }
 
 export function NotificationDrawer({
@@ -31,7 +32,13 @@ export function NotificationDrawer({
   notifications,
   onToggleRead,
   onMarkAllRead,
+  isLoading = false,
 }: NotificationDrawerProps) {
+  // Debug logging
+  console.log('NotificationDrawer - isOpen:', isOpen);
+  console.log('NotificationDrawer - notifications:', notifications);
+  console.log('NotificationDrawer - notifications length:', notifications?.length);
+  
   const unreadCount = notifications.filter(n => !n.isRead).length;
 
   const getNotificationIcon = (type: string) => {
@@ -113,8 +120,15 @@ export function NotificationDrawer({
             )}
 
             {/* Notifications List */}
-            <div className="flex-1 overflow-y-auto">
-              {notifications.length === 0 ? (
+            <div className="flex-1">
+              {isLoading ? (
+                <div className="flex flex-col items-center justify-center h-full text-center p-8">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mb-4"></div>
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">
+                    Loading notifications...
+                  </h3>
+                </div>
+              ) : notifications.length === 0 ? (
                 <div className="flex flex-col items-center justify-center h-full text-center p-8">
                   <Bell className="h-12 w-12 text-gray-300 mb-4" />
                   <h3 className="text-lg font-medium text-gray-900 mb-2">

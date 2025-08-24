@@ -30,6 +30,7 @@ The mock API (json-server) provides the following endpoints:
 - `GET /executions` - Trade executions
 - `GET /marketdata` - Market data
 - `GET /notifications` - User notifications
+- `PATCH /notifications/:id` - Update notification read status
 
 ## Getting Started
 
@@ -134,6 +135,15 @@ The RTK Query API is configured in `src/lib/api.ts`. To add new endpoints:
 1. Define the endpoint in the `nexusApi` builder
 2. Export the generated hook
 3. Use the hook in your components
+
+#### Available RTK Query Hooks
+
+- `useGetPortfolioQuery()` - Fetch portfolio data
+- `useGetMarketDataQuery()` - Fetch market data
+- `useGetOrdersQuery()` - Fetch order history
+- `useGetNotificationsQuery()` - Fetch user notifications
+- `useCreateOrderMutation()` - Create new orders
+- `useUpdateNotificationReadMutation()` - Update notification read status
 
 ### Mock Data
 

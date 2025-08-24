@@ -97,6 +97,10 @@ export const nexusApi = createApi({
     getNotifications: builder.query<Notification[], void>({
       query: () => 'notifications',
       providesTags: ['Notifications'],
+      // Transform the response to filter for user ID "1" if needed
+      transformResponse: (response: Notification[]) => {
+        return response.filter(notification => notification.userId === "1");
+      },
     }),
     
     // Users endpoints
@@ -117,6 +121,16 @@ export const nexusApi = createApi({
       }),
       invalidatesTags: ['Orders'],
     }),
+
+    // Update notification read status mutation
+    updateNotificationRead: builder.mutation<Notification, { id: string; isRead: boolean }>({
+      query: ({ id, isRead }) => ({
+        url: `notifications/${id}`,
+        method: 'PATCH',
+        body: { isRead },
+      }),
+      invalidatesTags: ['Notifications'],
+    }),
   }),
 });
 
@@ -128,4 +142,5 @@ export const {
   useGetNotificationsQuery,
   useGetUsersQuery,
   useCreateOrderMutation,
+  useUpdateNotificationReadMutation,
 } = nexusApi;

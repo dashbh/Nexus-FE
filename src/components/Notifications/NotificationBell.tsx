@@ -20,12 +20,14 @@ interface NotificationBellProps {
   notifications: Notification[];
   onToggleRead: (id: string) => void;
   onMarkAllRead: () => void;
+  isLoading?: boolean;
 }
 
 export function NotificationBell({
   notifications,
   onToggleRead,
   onMarkAllRead,
+  isLoading = false,
 }: NotificationBellProps) {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const unreadCount = notifications.filter(n => !n.isRead).length;
@@ -55,6 +57,7 @@ export function NotificationBell({
         notifications={notifications}
         onToggleRead={onToggleRead}
         onMarkAllRead={onMarkAllRead}
+        isLoading={isLoading}
       />
     </>
   );
