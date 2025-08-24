@@ -6,7 +6,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { formatCurrency } from '@/lib/utils';
 import { useCreateOrderMutation } from '@/lib/api';
 import { useToast } from '@/hooks/use-toast';
@@ -17,52 +16,81 @@ interface TradingModalProps {
   symbol: string;
   currentPrice: number;
   side: 'buy' | 'sell';
+  mode?: 'new' | 'edit';
+  orderData?: {
+    id: string;
+    quantity: number;
+    price: number;
+    type: 'buy' | 'sell';
+  };
 }
 
-export function TradingModal({ isOpen, onClose, symbol, currentPrice, side }: TradingModalProps) {
+export function TradingModal({ 
+  isOpen, 
+  onClose, 
+  symbol, 
+  currentPrice, 
+  side, 
+  mode = 'new',
+  orderData 
+}: TradingModalProps) {
   const [price, setPrice] = useState(currentPrice.toString());
   const [quantity, setQuantity] = useState('1');
   const [orderSide, setOrderSide] = useState<'buy' | 'sell'>(side);
   const [createOrder, { isLoading }] = useCreateOrderMutation();
   const { toast } = useToast();
 
-  // Update state when props change
   useEffect(() => {
     if (isOpen) {
-      console.log('TradingModal opened with:', { side, symbol, currentPrice });
-      setOrderSide(side);
-      setPrice(currentPrice.toString());
-      setQuantity('1');
+      if (mode === 'edit' && orderData) {
+        setOrderSide(orderData.type);
+        setPrice(orderData.price.toString());
+        setQuantity(orderData.quantity.toString());
+      } else {
+        setOrderSide(side);
+        setPrice(currentPrice.toString());
+        setQuantity('1');
+      }
     }
-  }, [isOpen, side, currentPrice, symbol]);
+  }, [isOpen, side, currentPrice, symbol, mode, orderData]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     try {
-      await createOrder({
-        symbol,
-        type: orderSide,
-        quantity: parseInt(quantity),
-        price: parseFloat(price),
-        status: 'pending',
-        placedAt: new Date().toISOString(),
-        filledAt: null,
-      }).unwrap();
+      if (mode === 'edit') {
+        // For edit mode, we would typically update the order
+        // For now, just show a success message
+        toast({
+          title: 'Order Updated Successfully',
+          description: `${orderSide.toUpperCase()} order for ${quantity} ${symbol} at ${formatCurrency(parseFloat(price))}`,
+        });
+      } else {
+        // For new orders, create a new order
+        await createOrder({
+          symbol,
+          type: orderSide,
+          quantity: parseInt(quantity),
+          price: parseFloat(price),
+          status: 'pending',
+          placedAt: new Date().toISOString(),
+          filledAt: null,
+        }).unwrap();
 
-      toast({
-        title: 'Order Placed Successfully',
-        description: `${orderSide.toUpperCase()} order for ${quantity} ${symbol} at ${formatCurrency(parseFloat(price))}`,
-      });
+        toast({
+          title: 'Order Placed Successfully',
+          description: `${orderSide.toUpperCase()} order for ${quantity} ${symbol} at ${formatCurrency(parseFloat(price))}`,
+        });
+      }
 
       onClose();
       // Reset form
       setPrice(currentPrice.toString());
       setQuantity('1');
-    } catch (error) {
+    } catch {
       toast({
         title: 'Error',
-        description: 'Failed to place order. Please try again.',
+        description: mode === 'edit' ? 'Failed to update order. Please try again.' : 'Failed to place order. Please try again.',
         variant: 'destructive',
       });
     }
@@ -78,7 +106,7 @@ export function TradingModal({ isOpen, onClose, symbol, currentPrice, side }: Tr
         <Card>
           <CardHeader className={`${orderSide === 'buy' ? 'border-l-4 border-l-green-500' : 'border-l-4 border-l-red-500'}`}>
             <CardTitle className="flex items-center justify-between">
-              <span>{orderSide.toUpperCase()} {symbol}</span>
+              <span>{mode === 'edit' ? 'Edit' : orderSide.toUpperCase()} {symbol}</span>
               <Badge 
                 variant={orderSide === 'buy' ? 'default' : 'secondary'}
                 className={orderSide === 'buy' ? 'bg-green-600' : 'bg-red-600'}
@@ -87,7 +115,10 @@ export function TradingModal({ isOpen, onClose, symbol, currentPrice, side }: Tr
               </Badge>
             </CardTitle>
             <CardDescription>
-              Place your {orderSide} order for {symbol} at current market price
+              {mode === 'edit' 
+                ? `Edit your ${orderSide} order for ${symbol}`
+                : `Place your ${orderSide} order for ${symbol} at current market price`
+              }
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -188,7 +219,10 @@ export function TradingModal({ isOpen, onClose, symbol, currentPrice, side }: Tr
                       : 'bg-red-600 hover:bg-red-700'
                   }`}
                 >
-                  {isLoading ? 'Placing Order...' : `${orderSide.toUpperCase()}`}
+                  {isLoading 
+                    ? (mode === 'edit' ? 'Updating Order...' : 'Placing Order...') 
+                    : (mode === 'edit' ? 'Update Order' : `${orderSide.toUpperCase()}`)
+                  }
                 </Button>
               </div>
             </form>

@@ -59,7 +59,7 @@ export interface Notification {
   userId: string;
   type: 'order_filled' | 'price_threshold' | 'system';
   message: string;
-  meta: Record<string, any>;
+  meta: Record<string, unknown>;
   sentAt: string;
   isRead: boolean;
 }

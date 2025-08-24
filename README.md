@@ -10,13 +10,15 @@ A modern trading platform built with Next.js 14, TypeScript, TailwindCSS, shadcn
 - **Mock API**: json-server for development and testing
 - **Responsive Design**: Mobile-friendly interface with responsive Tailwind classes
 - **Real-time Data**: Simulated real-time market data and portfolio updates
+- **Notifications**: Real-time notification system with drawer and badge indicators
+- **Enhanced Orders**: Advanced order management with sorting, filtering, and action buttons
 
 ## Pages
 
 1. **Login** (`/login`) - Basic authentication form
 2. **Portfolio** (`/portfolio`) - View holdings, current values, and P&L
 3. **Market** (`/market`) - Real-time stock prices and market data
-4. **Orders** (`/orders`) - Order history and status tracking
+4. **Orders** (`/orders`) - Enhanced order history with sorting, filtering, and action buttons
 
 ## API Endpoints
 
@@ -75,10 +77,19 @@ src/
 │   ├── portfolio/         # Portfolio page
 │   ├── market/            # Market data page
 │   ├── orders/            # Orders page
+│   ├── api/               # API routes
+│   │   └── notifications/ # Notifications API
 │   └── layout.tsx         # Root layout
 ├── components/
 │   ├── ui/                # shadcn/ui components
-│   └── Navbar.tsx         # Navigation component
+│   ├── Notifications/     # Notification components
+│   │   ├── NotificationBell.tsx
+│   │   ├── NotificationDrawer.tsx
+│   │   └── index.ts
+│   └── layout/
+│       └── AppShell.tsx   # Main layout with notifications
+├── hooks/
+│   └── useNotifications.ts # Custom notification hook
 └── lib/
     ├── api.ts             # RTK Query API configuration
     ├── store.ts           # Redux store configuration
@@ -103,6 +114,7 @@ The application uses a comprehensive data schema that includes:
 - **UI Components**: shadcn/ui
 - **State Management**: Redux Toolkit, RTK Query
 - **Mock API**: json-server
+- **Animations**: Framer Motion
 - **Development**: ESLint, Turbopack
 
 ## Development

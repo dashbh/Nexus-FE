@@ -96,7 +96,8 @@ export default function PortfolioPage() {
             <CardDescription>Your current stock positions and performance</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="overflow-x-auto">
+            {/* Desktop Table View */}
+            <div className="hidden md:block overflow-x-auto">
               <Table>
                 <TableHeader>
                   <TableRow>
@@ -123,6 +124,37 @@ export default function PortfolioPage() {
                   ))}
                 </TableBody>
               </Table>
+            </div>
+
+            {/* Mobile Card View */}
+            <div className="md:hidden space-y-4">
+              {portfolio?.map((item) => (
+                <Card key={item.id} className="p-4 hover:shadow-md transition-shadow">
+                  <div className="flex items-start justify-between mb-3">
+                    <div>
+                      <h3 className="font-semibold text-base">{item.symbol}</h3>
+                      <p className="text-sm text-gray-600">Quantity: {formatNumber(item.quantity)}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-semibold text-lg">{formatCurrency(item.currentValue)}</p>
+                      <p className={`text-sm font-medium ${item.unrealizedPnl >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                        {formatCurrency(item.unrealizedPnl)}
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-xs text-gray-500">Avg Buy Price</p>
+                      <p className="text-sm font-medium">{formatCurrency(item.avgBuyPrice)}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-500">Current Price</p>
+                      <p className="text-sm font-medium">{formatCurrency(item.currentPrice)}</p>
+                    </div>
+                  </div>
+                </Card>
+              ))}
             </div>
           </CardContent>
         </Card>

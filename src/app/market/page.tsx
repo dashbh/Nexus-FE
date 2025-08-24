@@ -34,7 +34,7 @@ export default function MarketPage() {
   const filteredAndSortedData = useMemo(() => {
     if (!marketData) return [];
 
-    let filtered = marketData.filter(
+    const filtered = marketData.filter(
       (item) =>
         item.symbol.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -201,7 +201,8 @@ export default function MarketPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="overflow-x-auto">
+            {/* Desktop Table View */}
+            <div className="hidden md:block overflow-x-auto">
               <Table>
                 <TableHeader>
                   <TableRow>
@@ -270,6 +271,50 @@ export default function MarketPage() {
                   ))}
                 </TableBody>
               </Table>
+            </div>
+
+            {/* Mobile Card View */}
+            <div className="md:hidden space-y-4">
+              {filteredAndSortedData.map((item) => (
+                <Card key={item.symbol} className="p-4 hover:shadow-md transition-shadow">
+                  <div className="flex items-start justify-between mb-3">
+                    <div>
+                      <h3 className="font-semibold text-base">{item.symbol}</h3>
+                      <p className="text-sm text-gray-600">{item.name}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-semibold text-lg">{formatCurrency(item.price)}</p>
+                      <p className={`text-sm font-medium ${item.change >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                        {item.change >= 0 ? '+' : ''}{formatCurrency(item.change)} ({formatPercent(item.changePercent)})
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center justify-between mb-4">
+                    <div>
+                      <p className="text-xs text-gray-500">Volume</p>
+                      <p className="text-sm font-medium">{formatNumber(item.volume)}</p>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button
+                        size="sm"
+                        className="bg-green-600 hover:bg-green-700 text-white text-xs"
+                        onClick={() => openTradingModal(item.symbol, item.price, 'buy')}
+                      >
+                        Buy
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="border-red-300 text-red-600 hover:bg-red-50 text-xs"
+                        onClick={() => openTradingModal(item.symbol, item.price, 'sell')}
+                      >
+                        Sell
+                      </Button>
+                    </div>
+                  </div>
+                </Card>
+              ))}
             </div>
           </CardContent>
         </Card>

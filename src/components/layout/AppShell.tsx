@@ -12,7 +12,10 @@ import {
   DropdownMenuSeparator, 
   DropdownMenuTrigger 
 } from '@/components/ui/dropdown-menu';
-import { User, Settings, LogOut } from 'lucide-react';
+import { User, Settings, LogOut, Home, TrendingUp, FileText, PieChart } from 'lucide-react';
+import { NotificationBell } from '@/components/Notifications';
+import { useNotifications } from '@/hooks/useNotifications';
+import { MobileNav } from './MobileNav';
 
 interface AppShellProps {
   children: React.ReactNode;
@@ -20,12 +23,13 @@ interface AppShellProps {
 
 export function AppShell({ children }: AppShellProps) {
   const pathname = usePathname();
+  const { notifications, toggleRead, markAllRead } = useNotifications();
 
   const navItems = [
-    { href: '/market', label: 'Market' },
-    { href: '/orders', label: 'Orders' },
-    { href: '/portfolio', label: 'Portfolio' },
-    { href: '/dashboard', label: 'Dashboard' },
+    { href: '/dashboard', label: 'Dashboard', icon: <Home className="h-4 w-4" /> },
+    { href: '/market', label: 'Market', icon: <TrendingUp className="h-4 w-4" /> },
+    { href: '/orders', label: 'Orders', icon: <FileText className="h-4 w-4" /> },
+    { href: '/portfolio', label: 'Portfolio', icon: <PieChart className="h-4 w-4" /> },
   ];
 
   return (
@@ -34,8 +38,9 @@ export function AppShell({ children }: AppShellProps) {
       <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
         <div className="container mx-auto px-4">
           <div className="flex h-16 items-center justify-between">
-            {/* Logo */}
+            {/* Logo and Mobile Nav */}
             <div className="flex items-center space-x-4">
+              <MobileNav navItems={navItems} />
               <Link href="/dashboard" className="flex items-center space-x-2">
                 <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
                   <span className="text-white font-bold text-sm">N</span>
@@ -44,7 +49,7 @@ export function AppShell({ children }: AppShellProps) {
               </Link>
             </div>
 
-            {/* Navigation */}
+            {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-1">
               {navItems.map((item) => (
                 <Link key={item.href} href={item.href}>
@@ -61,6 +66,11 @@ export function AppShell({ children }: AppShellProps) {
 
             {/* User Menu */}
             <div className="flex items-center space-x-4">
+              <NotificationBell
+                notifications={notifications}
+                onToggleRead={toggleRead}
+                onMarkAllRead={markAllRead}
+              />
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="relative h-8 w-8 rounded-full">
