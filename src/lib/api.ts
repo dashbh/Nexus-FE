@@ -66,7 +66,7 @@ export interface Notification {
 
 export const nexusApi = createApi({
   reducerPath: 'nexusApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3001' }),
+  baseQuery: fetchBaseQuery({ baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001' }),
   tagTypes: ['Portfolio', 'Orders', 'MarketData', 'Notifications'],
   endpoints: (builder) => ({
     // Portfolio endpoints
